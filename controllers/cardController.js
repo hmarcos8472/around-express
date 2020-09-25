@@ -1,5 +1,4 @@
 const path = require('path')
-const fs = require('fs').promises
 
 const getFileContent = require('../helper/getfilecontent.js')
 const pathToData = path.join(__dirname, '..', 'data', 'cards.json')

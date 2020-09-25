@@ -10,9 +10,6 @@ const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'public/static')))
 
-const fs = require('fs').promises
-const getFileContent = require('./helper/getfilecontent.js')
-
 const {usersRouter} = require('./routes/users.js')
 const {cardsRouter} = require('./routes/cards.js')
 
