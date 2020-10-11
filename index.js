@@ -1,6 +1,16 @@
 const express = require('express');
-
+const mongoose = require('mongoose')
 const app = express();
+const bodyParser = require('body-parser')
+
+mongoose.connect('mongodb://localhost:27017/aroundb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // listen to port 3000
 const { PORT = 3000 } = process.env;
@@ -18,7 +28,15 @@ app.use('/', usersRouter)
 app.use('/', cardsRouter)
 
 app.use(function (req, res) {
-  res.status(404).send({ message : "Requested Resource Not Found" });
+  res.status(404).send({ message : " Requested Resource Not Found..." });
+});
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5f8267d324496b2d9032c3db'
+  };
+
+  next();
 });
 
 app.listen(PORT, () => {

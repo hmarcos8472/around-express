@@ -12,7 +12,7 @@ function getCards(req, res) {
       res.status(500).send({ message : "Something Went Wrong..."})
     })
     .catch(() => {
-      res.status(404).send({ message : "Requested Resource Was Not Dound..."})
+      res.status(404).send({ message : "Requested Resource Was Not Found..."})
     })
 }
 
