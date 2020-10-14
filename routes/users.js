@@ -2,13 +2,13 @@ const express = require('express')
 const path = require('path')
 const usersRouter = express.Router()
 
-const { getSingleUser, getUsers, createUser } = require('../controllers/userController.js')
+const { getSingleUser, getUsers, createUser, updateUserName, updateAvatar } = require('../controllers/userController.js')
 
 usersRouter.get('/users', getUsers)
-
 usersRouter.get('/users/:id', getSingleUser)
-
 usersRouter.post('/users', createUser)
+usersRouter.patch('/users/me', updateUserName)
+usersRouter.patch('/user/avatar', updateAvatar)
 
 
 module.exports = {usersRouter}

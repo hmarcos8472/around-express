@@ -23,20 +23,20 @@ app.use(express.static(path.join(__dirname, 'public/static')))
 const {usersRouter} = require('./routes/users.js')
 const {cardsRouter} = require('./routes/cards.js')
 
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '5f825dab0d8e6ba76c15c74e'
+  };
+  next();
+});
+
 app.use('/', usersRouter)
 
 app.use('/', cardsRouter)
 
 app.use(function (req, res) {
   res.status(404).send({ message : " Requested Resource Not Found..." });
-});
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5f8267d324496b2d9032c3db'
-  };
-
-  next();
 });
 
 app.listen(PORT, () => {

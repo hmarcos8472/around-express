@@ -1,19 +1,47 @@
 const path = require('path')
 
-const getFileContent = require('../helper/getfilecontent.js')
-const pathToData = path.join(__dirname, '..', 'data', 'cards.json')
+const Card = require('../models/card.js')
 
 function getCards(req, res) {
-  getFileContent(pathToData)
-    .then((cards) => {
+  return Card.find({})
+    .populate('owner')
+    .then(cards => {
       res.send(cards)
     })
-    .catch(() => {
-      res.status(500).send({ message : "Something Went Wrong..."})
-    })
-    .catch(() => {
-      res.status(404).send({ message : "Requested Resource Was Not Found..."})
-    })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
 }
 
-module.exports = {getCards}
+function createCard(req, res) {
+  const {name, link } = req.body
+  Card.create({name, link, owner: req.user._id})
+  .then(card => {res.send({data : card})})
+  .catch(err => {
+    res.status(400).send(err)
+  })
+}
+
+function deleteCard(req, res) {
+  const { id } = req.params.cardId;
+  return Card.deleteOne(id)
+    .then(card => {
+      res.status(200).send({card, message: "Card has been deleted"})
+    })
+    .catch(() => res.status(500).send({message: "500 Internal server error"}))
+}
+
+function likeCard(req, res) {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
+    { new: true },
+  )
+}
+
+function dislikeCard(req, res){
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $pull: { likes: req.user._id } }, // remove _id from the array
+    { new: true },
+  )
+}
+module.exports = {getCards, createCard, deleteCard, likeCard, dislikeCard}

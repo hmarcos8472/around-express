@@ -11,9 +11,6 @@ function getUsers(req, res) {
 
 function getSingleUser(req, res) {
   return User.find({_id: req.params.id})
-    .then(users => {
-      return users.find((user => user._id === req.params.id));
-    })
     .then(user => {
       if (user) {
         return res.status(200).send(user);
@@ -37,4 +34,18 @@ function createUser(req, res) {
   })
 }
 
-module.exports = {getSingleUser, getUsers, createUser}
+function updateUserName(req, res) {
+  User.findByIdAndUpdate(req.params.id, "name: req.body")
+    .then(user => res.send({ data: req.body }))
+    .catch((err) => {
+      res.status(500).send({ message: "500 Internal server error" });})
+};
+
+function updateAvatar(req, res) {
+  User.findByIdAndUpdate(req.params.id, "avatar: req.body")
+    .then(user => res.send({ data: req.body }))
+    .catch((err) => {
+      res.status(500).send({ message: "500 Internal server error" });})
+};
+
+module.exports = {getSingleUser, getUsers, createUser, updateUserName, updateAvatar}
