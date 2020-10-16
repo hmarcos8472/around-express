@@ -1,5 +1,3 @@
-const path = require('path')
-
 const Card = require('../models/card.js')
 
 function getCards(req, res) {

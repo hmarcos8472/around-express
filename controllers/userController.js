@@ -1,4 +1,3 @@
-const path = require('path')
 const User = require('../models/user.js')
 
 /////
@@ -40,7 +39,7 @@ function createUser(req, res) {
     res.status(200).send(user)
   })
   .catch((err) => {
-    if (err.name === "Validation Error") {
+    if (err.name === "ValidationError") {
       res.status(400).send({message : "User validation failed"})
     } else {
       res.status(500).send({message : "Internal server error"})
