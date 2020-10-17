@@ -15,7 +15,7 @@ function createCard(req, res) {
   Card.create({name, link, owner: req.user._id})
   .then(card => {res.send({data : card})})
   .catch((err) => {
-    if (err.name === "Validation Error") {
+    if (err.name === "ValidationError") {
       res.status(400).send({message : "Card validation failed"})
     } else {
       res.status(500).send({message : "Internal server error"})
